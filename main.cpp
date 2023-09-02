@@ -1,13 +1,11 @@
 #include <iostream>
-#include <cassert>
 #include <filesystem>
 #include <Windows.h>
 #include <ctime>
 
 std::size_t NumberOfFilesInDirectory(std::filesystem::path path)
 {
-    using std::filesystem::directory_iterator;
-    return std::distance(directory_iterator(path), directory_iterator{});
+    return std::distance(std::filesystem::directory_iterator(path), std::filesystem::directory_iterator{});
 }
 
 std::string GetCurrentDate()
@@ -30,7 +28,6 @@ std::string GetCurrentDate()
 
 void MoveFiles(std::filesystem::path src, std::filesystem::path dst)
 {
-
     for (const auto &entry : std::filesystem::directory_iterator(src))
     {
         try
@@ -40,7 +37,7 @@ void MoveFiles(std::filesystem::path src, std::filesystem::path dst)
                 continue;
             std::filesystem::path new_file_path = dst / entry.path().filename();
             std::filesystem::rename(entry.path(), new_file_path);
-            std::cout << "Moved: " << entry.path() << " to " << new_file_path << std::endl;
+            std::cout << "Successfully moved: " << entry.path().filename() << std::endl;
         }
         catch (const std::exception &e)
         {
@@ -55,7 +52,7 @@ int main(int argc, char *argv[])
     std::filesystem::path desktop_path = std::filesystem::path("C:\\Users\\" + username + "\\Desktop");
 
     // -1 because ignoring desktop.ini
-    std::cout << "Files found in " << desktop_path << ": " << NumberOfFilesInDirectory(desktop_path) - 1 << std::endl;
+    std::cout << "Files found on Desktop: " << NumberOfFilesInDirectory(desktop_path) - 1 << std::endl;
 
     std::filesystem::path target_path = std::filesystem::path("C:\\Users\\" + username + "\\Documents");
 
