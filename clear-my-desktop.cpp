@@ -10,18 +10,13 @@ std::size_t NumberOfFilesInDirectory(std::filesystem::path path)
 
 std::string GetCurrentDate()
 {
-    const char *months[] = {
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
     std::time_t current_time = std::time(nullptr);
     struct tm local_time;
     localtime_s(&local_time, &current_time); // Get local time
 
     std::stringstream ss;
-    ss << std::setfill('0') << std::setw(2) << local_time.tm_mday << " "
-       << months[local_time.tm_mon] << " "
-       << 1900 + local_time.tm_year;
+    ss << std::setfill('0') << std::setw(2) << 1900 + local_time.tm_year << '-' << 1 + local_time.tm_mon << '-' << local_time.tm_mday;
 
     return ss.str();
 }
